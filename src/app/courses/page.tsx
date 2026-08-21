@@ -7,6 +7,7 @@ type Course = {
 };
 
 
+
 const courses: Course[] = [
   {
     id: 1,
@@ -24,9 +25,23 @@ const courses: Course[] = [
   },
   {
     id: 3,
-    code: "10313301232",
-    title: "Dataddaddbase Systems",
-    credits: 1,
+    code: "10301233",
+    title: "Data Structures and Algorithms",
+    credits: 3,
+    isOpen: true,
+  },
+  {
+    id: 4,
+    code: "10301234",
+    title: "Software Engineering",
+    credits: 3,
+    isOpen: true,
+  },
+  {
+    id: 5,
+    code: "10301235",
+    title: "Computer Networks",
+    credits: 3,
     isOpen: false,
   },
 ];
