@@ -1,7 +1,7 @@
 export type Band = {
   id: number;
   bandname: string;
-  img:string
+  img: string;
   member: Member[];
 };
 export type Member = {

@@ -7,7 +7,7 @@ export default function BandCard({ band }: BandCardProps) {
   return (
     <article className="courseCard">
       <h2>{band.bandname}</h2>
-      
+
       {band.img && (
         <Image
           src={band.img}
@@ -41,4 +41,3 @@ export default function BandCard({ band }: BandCardProps) {
     </article>
   );
 }
-
