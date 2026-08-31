@@ -63,7 +63,7 @@ export const bands: Band[] = [
       {
         name: "Miku Nakamura",
         role: " Lead vocals, guitar, keyboards, manipulator",
-        img: "/images/bands/co/miku.jfif",
+        img: "/images/bands/co/miku.webp",
       },
       {
         name: "Shunsuke Matsumoto",
