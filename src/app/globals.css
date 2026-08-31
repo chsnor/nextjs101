@@ -52,4 +52,59 @@ body {
   border: 1px solid #d1d5db; 
   border-radius: 0.75rem; 
   background: white; 
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 } 
+
+.bandImage {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+
+.memberList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.memberItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: #d3e9ff;
+}
+
+.memberAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.memberInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.memberName {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #111827;
+}
+
+.memberRole {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
