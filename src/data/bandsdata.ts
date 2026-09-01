@@ -9,7 +9,7 @@ export const bands: Band[] = [
       {
         name: "Kim Chaewon",
         role: "Leader and vocalist",
-        img: "/images/bands/lesserafim/Kim Chaewon.webp",
+        img: "/images/bands/lesserafim/kim-chaewon.webp",
       },
       {
         name: "Sakura",
@@ -19,11 +19,11 @@ export const bands: Band[] = [
       {
         name: "Huh Yunjin",
         role: "Vocalist and songwriter",
-        img: "/images/bands/lesserafim/Huh Yunjin.webp",
+        img: "/images/bands/lesserafim/huh-yunjin.webp",
       },
       {
         name: "Kazuha",
-        role: " Rapper, dancer, and former ballerina",
+        role: "Rapper, dancer, and former ballerina",
         img: "/images/bands/lesserafim/Kazuha.webp",
       },
       {
@@ -62,7 +62,7 @@ export const bands: Band[] = [
     member: [
       {
         name: "Miku Nakamura",
-        role: " Lead vocals, guitar, keyboards, manipulator",
+        role: "Lead vocals, guitar, keyboards, manipulator",
         img: "/images/bands/co/miku.webp",
       },
       {
