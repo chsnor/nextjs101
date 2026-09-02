@@ -1,5 +1,6 @@
 import { Band } from "@/types/band";
 import Image from "next/image";
+import MemberItem from "./MemberItem";
 
 export type BandcardProp = {
   band: Band;
@@ -23,22 +24,8 @@ export default function BandCard({ band }: BandcardProp) {
 
       <h3>สมาชิก</h3>
       <ul className="memberList">
-        {member?.map(({ img: pic, role, name }) => (
-          <li key={name} className="memberItem">
-            {pic && (
-              <Image
-                src={pic}
-                alt={name}
-                width={50}
-                height={50}
-                className="memberAvatar"
-              />
-            )}
-            <div className="memberInfo">
-              <span className="memberName">{name}</span>
-              <span className="memberRole">{role}</span>
-            </div>
-          </li>
+        {member.map((m) => (
+          <MemberItem key={m.name} member={m} />
         ))}
       </ul>
     </article>
