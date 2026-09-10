@@ -12,7 +12,7 @@ export default function CounterDemo() {
 
   return (
     <button type="button" onClick={handleClick}>
-      คลิกแล้ว {count} ครั้ง
+      Like {count} 
     </button>
   );
 }

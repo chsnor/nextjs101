@@ -1,4 +1,5 @@
 import { Course } from "@/types/course";
+import ButtonComponent from "@/components/ButtonComponent"
 type CourseCardProps = {
   course: Course;
   isFavorite: boolean;
@@ -11,8 +12,10 @@ export default function CourseCard({
 }: CourseCardProps) {
   return (
     <>
+    <ButtonComponent/>
       <article key={course.id} className="courseCard">
         <h2>{course.title}</h2>
+        
         <p>รหัสวิชา: {course.code}</p>
         <p>{course.credits} หน่วยกิต</p>
         <p>{course.isOpen ? "เปิดลงทะเบียน" : "ปิดลงทะเบียน"}</p>

@@ -19,6 +19,8 @@ export default function BandExplorer({ bands }: BandExplorerProps) {
     const visibleBands = !keyword.trim() 
     ? bands
     : fuse.search(keyword.trim()).map((result) => result.item);
+
+    
 const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
 
 function handleToggleFavorite(id: number) {
@@ -37,12 +39,14 @@ function handleToggleFavorite(id: number) {
         onChange={handleKeywordChange}
         placeholder="ค้นหาชื่อวงดนตรีหรือสมาชิกวง"
       />
+      <p>ติดตามแล้ว {favoriteIds.length} วง</p>
       {visibleBands.length === 0 ? (
         <p>ไม่พบวงดนตรีที่ตรงกับเงื่อนไข</p>
       ) : (
         <section>
           {visibleBands.map((band) => (
-            <BandCard key={band.id} band={band} />
+            <BandCard key={band.id} band={band}  isFavorite={favoriteIds.includes(band.id)}
+              onToggleFavorite={handleToggleFavorite} />
           ))}
         </section>
       )}
