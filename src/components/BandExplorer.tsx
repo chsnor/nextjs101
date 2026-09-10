@@ -55,18 +55,8 @@ export default function BandExplorer({ bands }: BandExplorerProps) {
             value={keyword}
             onChange={handleKeywordChange}
             placeholder="ค้นหาชื่อวงดนตรี หรือชื่อสมาชิก..."
-            className="w-full pl-10 pr-9 py-2.5 bg-slate-950/70 border border-slate-700/60 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/10 text-slate-100 placeholder-slate-500 rounded-xl text-sm transition duration-200 outline-hidden shadow-inner"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-950/70 border border-slate-700/60 focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/10 text-slate-100 placeholder-slate-500 rounded-xl text-sm transition duration-200 outline-hidden shadow-inner"
           />
-          {keyword && (
-            <button
-              type="button"
-              onClick={() => setKeyword("")}
-              className="cursor-pointer absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200 text-xs"
-              aria-label="ล้างคำค้นหา"
-            >
-              ✕
-            </button>
-          )}
         </div>
 
         <div className="flex items-center gap-3">
