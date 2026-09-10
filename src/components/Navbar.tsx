@@ -20,7 +20,7 @@ export default function Navbar() {
           </Link>
         </li>
         <li>
-          <Link className="navLink" href="bands">
+          <Link className="navLink" href="/bands">
             วงดนตรี
           </Link>
         </li>
