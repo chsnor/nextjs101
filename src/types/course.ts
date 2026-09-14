@@ -1,8 +1,7 @@
 export type Course = {
-  id: number;
+  id: string;
   code: string;
-  title: string;
-  credits: number;
-  isOpen: boolean;
-  description?: string;
+  name: string;
+  credit: number;
+  instructor: string;
 };
