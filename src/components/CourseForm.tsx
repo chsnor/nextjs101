@@ -77,7 +77,7 @@ export default function CourseForm({
 
   return (
     <div className="courseForm">
-      <h2>{isEditing ? "✏️ แก้ไขรายวิชา" : "➕ เพิ่มรายวิชาใหม่"}</h2>
+      <h2>{isEditing ? " แก้ไขรายวิชา" : " เพิ่มรายวิชาใหม่"}</h2>
       <form onSubmit={handleSubmit} noValidate>
         <div className="formGrid">
           <div className="formField">
