@@ -8,4 +8,5 @@ export type Game = {
   platform: GamePlatform;
   estimatedHours: number;
   status: GameStatus;
+  coverUrl?: string;
 };
