@@ -5,6 +5,7 @@ import GameCard from "@/components/GameCard";
 import GameForm, { type GameDraft } from "@/components/GameForm";
 import type { Game, GamePlatform, GameStatus } from "@/types/game";
 import { useGameStore } from "@/store/gameStore";
+import { Select } from "@/components/ui/Select";
 import { toast } from "sonner";
 import {
   Search,
@@ -281,10 +282,9 @@ export default function GameExplorer({ initialGames }: GameExplorerProps) {
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                 <Filter size={13} />
               </div>
-              <select
+              <Select
                 value={filterPlatform}
                 onChange={(e) => setFilterPlatform(e.target.value)}
-                className="w-full sm:w-auto pl-8 pr-7 py-1.5 bg-slate-50/70 focus:bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold focus:border-emerald-600 outline-none cursor-pointer appearance-none"
                 aria-label="กรองตามแพลตฟอร์ม"
               >
                 <option value="all">ทุกแพลตฟอร์ม</option>
@@ -293,7 +293,7 @@ export default function GameExplorer({ initialGames }: GameExplorerProps) {
                 <option value="Nintendo Switch">Nintendo Switch</option>
                 <option value="Xbox Series X/S">Xbox Series X/S</option>
                 <option value="Mobile">Mobile</option>
-              </select>
+              </Select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400 text-[10px]">
                 ▼
               </div>
