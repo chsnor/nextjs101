@@ -6,13 +6,14 @@ import GameForm, { type GameDraft } from "@/components/GameForm";
 import type { Game, GamePlatform, GameStatus } from "@/types/game";
 import { useGameStore } from "@/store/gameStore";
 import { Select } from "@/components/ui/Select";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { toast } from "sonner";
 import {
   Search,
   Trophy,
   Flame,
   Clock,
-  Sparkles,
   Gamepad2,
   Filter,
 } from "lucide-react";
@@ -122,85 +123,41 @@ export default function GameExplorer({ initialGames }: GameExplorerProps) {
 
   return (
     <div className="space-y-6">
-      <section
-        className="grid grid-cols-2 lg:grid-cols-4 gap-3.5"
-        aria-label="สถิติคลังเกม"
-      >
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-              ทั้งหมดในคลัง
-            </span>
-            <div className="p-1.5 rounded-lg bg-slate-100 text-slate-600">
-              <Gamepad2 size={15} />
-            </div>
-          </div>
-          <div className="mt-2.5 flex items-baseline gap-1.5">
-            <strong className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              {games.length}
-            </strong>
-            <span className="text-xs text-slate-400 font-medium">เกม</span>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-blue-600 uppercase tracking-wider">
-              กำลังเล่น
-            </span>
-            <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600">
-              <Flame size={15} />
-            </div>
-          </div>
-          <div className="mt-2.5 flex items-baseline gap-1.5">
-            <strong className="text-2xl sm:text-3xl font-black text-blue-600 tracking-tight">
-              {playingCount}
-            </strong>
-            <span className="text-xs text-slate-400 font-medium">เกม</span>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">
-              เล่นจบแล้ว ({completionRate}%)
-            </span>
-            <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-700">
-              <Trophy size={15} />
-            </div>
-          </div>
-          <div className="mt-2.5">
-            <div className="flex items-baseline gap-1.5 mb-2">
-              <strong className="text-2xl sm:text-3xl font-black text-emerald-700 tracking-tight">
-                {finishedCount}
-              </strong>
-              <span className="text-xs text-slate-400 font-medium">เกม</span>
-            </div>
-            <div className="w-full h-1.5 bg-emerald-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-emerald-600 rounded-full transition-all duration-500"
-                style={{ width: `${completionRate}%` }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">
-              เวลาที่ยังค้าง
-            </span>
-            <div className="p-1.5 rounded-lg bg-amber-50 text-amber-600">
-              <Clock size={15} />
-            </div>
-          </div>
-          <div className="mt-2.5 flex items-baseline gap-1.5">
-            <strong className="text-2xl sm:text-3xl font-black text-amber-600 tracking-tight">
-              {unstartedTotalHours}
-            </strong>
-            <span className="text-xs text-slate-400 font-medium">ชั่วโมง</span>
-          </div>
-        </div>
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3.5" aria-label="สถิติคลังเกม">
+        <MetricCard
+          title="ทั้งหมดในคลัง"
+          value={games.length}
+          unit="เกม"
+          icon={Gamepad2}
+          colorClass="text-slate-600 font-bold"
+          bgClass="bg-slate-100"
+        />
+        <MetricCard
+          title="กำลังเล่น"
+          value={playingCount}
+          unit="เกม"
+          icon={Flame}
+          colorClass="text-blue-600"
+          bgClass="bg-blue-50"
+        />
+        <MetricCard
+          title="เล่นจบแล้ว"
+          extraInfo={`(${completionRate}%)`}
+          value={finishedCount}
+          unit="เกม"
+          icon={Trophy}
+          colorClass="text-emerald-700"
+          bgClass="bg-emerald-50"
+          progressBarWidth={completionRate}
+        />
+        <MetricCard
+          title="เวลาที่ยังค้าง"
+          value={unstartedTotalHours}
+          unit="ชั่วโมง"
+          icon={Clock}
+          colorClass="text-amber-600"
+          bgClass="bg-amber-50"
+        />
       </section>
 
       {(isFormOpen || editingId !== null) && (
@@ -331,34 +288,12 @@ export default function GameExplorer({ initialGames }: GameExplorerProps) {
         </div>
       )}
 
-      {pendingDeleteId && pendingGame ? (
-        <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 animate-in fade-in duration-150">
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 max-w-sm w-full shadow-2xl space-y-4 text-slate-900">
-            <div className="space-y-1">
-              <h3 className="text-base font-bold text-red-600">ยืนยันการลบเกม</h3>
-              <p className="text-slate-600 text-xs leading-relaxed">
-                คุณต้องการลบ &ldquo;{pendingGame.title}&rdquo; ออกจากคลัง Backlog หรือไม่?
-              </p>
-            </div>
-            <div className="flex items-center justify-end gap-2.5 pt-2">
-              <button
-                type="button"
-                className="cursor-pointer px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl text-xs transition"
-                onClick={() => setPendingDeleteId(null)}
-              >
-                ยกเลิก
-              </button>
-              <button
-                type="button"
-                className="cursor-pointer px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl text-xs transition shadow-sm"
-                onClick={confirmDelete}
-              >
-                ยืนยันการลบ
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+      <ConfirmModal
+        isOpen={!!pendingDeleteId && !!pendingGame}
+        title={pendingGame?.title}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDeleteId(null)}
+      />
     </div>
   );
 }
