@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
 import type { Game, GamePlatform, GameStatus } from "@/types/game";
+import { InputField } from "@/components/ui/InputField";
 import { z } from "zod";
 
 export type GameDraft = {
@@ -39,9 +40,7 @@ type GameFormProps = {
 };
 
 function toDraft(game?: Game): GameDraft {
-  if (!game) {
-    return emptyDraft;
-  }
+  if (!game) return emptyDraft;
   return {
     title: game.title,
     platform: game.platform,
@@ -67,9 +66,7 @@ const gameSchema = z.object({
 
 function validate(value: GameDraft): FormErrors {
   const result = gameSchema.safeParse(value);
-  if (result.success) {
-    return {};
-  }
+  if (result.success) return {};
 
   const fieldErrors = result.error.flatten().fieldErrors;
   return {
@@ -146,30 +143,16 @@ export default function GameForm({
             </div>
           )}
 
-          <div>
-            <label
-              htmlFor="title"
-              className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5"
-            >
-              ชื่อเกม
-            </label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              value={draft.title}
-              onChange={handleChange}
-              aria-invalid={!!errors.title}
-              aria-describedby={errors.title ? "title-error" : undefined}
-              placeholder="เช่น Cyberpunk 2077, Elden Ring, Black Myth: Wukong"
-              className="w-full px-4 py-2.5 bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:border-emerald-600 focus:ring-3 focus:ring-emerald-500/10 outline-none transition"
-            />
-            {errors.title ? (
-              <p id="title-error" className="text-red-500 text-xs mt-1.5 font-medium">
-                {errors.title}
-              </p>
-            ) : null}
-          </div>
+          <InputField
+            id="title"
+            name="title"
+            label="ชื่อเกม"
+            type="text"
+            value={draft.title}
+            onChange={handleChange}
+            error={errors.title}
+            placeholder="เช่น Cyberpunk 2077, Elden Ring, Black Myth: Wukong"
+          />
 
           <div>
             <label className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-2">
@@ -203,50 +186,28 @@ export default function GameForm({
             ) : null}
           </div>
 
-          <div>
-            <label
-              htmlFor="estimatedHours"
-              className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5"
-            >
-              เวลาเล่นโดยประมาณ (ชั่วโมง)
-            </label>
-            <input
-              id="estimatedHours"
-              name="estimatedHours"
-              type="number"
-              inputMode="numeric"
-              min="1"
-              value={draft.estimatedHours}
-              onChange={handleChange}
-              aria-invalid={!!errors.estimatedHours}
-              aria-describedby={errors.estimatedHours ? "hours-error" : undefined}
-              placeholder="เช่น 30"
-              className="w-full px-4 py-2.5 bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:border-emerald-600 focus:ring-3 focus:ring-emerald-500/10 outline-none transition"
-            />
-            {errors.estimatedHours ? (
-              <p id="hours-error" className="text-red-500 text-xs mt-1.5 font-medium">
-                {errors.estimatedHours}
-              </p>
-            ) : null}
-          </div>
+          <InputField
+            id="estimatedHours"
+            name="estimatedHours"
+            label="เวลาเล่นโดยประมาณ (ชั่วโมง)"
+            type="number"
+            inputMode="numeric"
+            min="1"
+            value={draft.estimatedHours}
+            onChange={handleChange}
+            error={errors.estimatedHours}
+            placeholder="เช่น 30"
+          />
 
-          <div>
-            <label
-              htmlFor="coverUrl"
-              className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5"
-            >
-              URL รูปภาพหน้าปกเกม (ไม่บังคับ)
-            </label>
-            <input
-              id="coverUrl"
-              name="coverUrl"
-              type="url"
-              value={draft.coverUrl || ""}
-              onChange={handleChange}
-              placeholder="วางลิงก์รูปภาพ เช่น Steam CDN หรือรูปจากเว็บ"
-              className="w-full px-4 py-2.5 bg-slate-50/70 hover:bg-white focus:bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 text-sm focus:border-emerald-600 focus:ring-3 focus:ring-emerald-500/10 outline-none transition"
-            />
-          </div>
+          <InputField
+            id="coverUrl"
+            name="coverUrl"
+            label="URL รูปภาพหน้าปกเกม (ไม่บังคับ)"
+            type="url"
+            value={draft.coverUrl || ""}
+            onChange={handleChange}
+            placeholder="วางลิงก์รูปภาพ เช่น Steam CDN หรือรูปจากเว็บ"
+          />
 
           <div>
             <label className="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-2">
