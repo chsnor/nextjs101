@@ -4,7 +4,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import type { Game, GamePlatform, GameStatus } from "@/types/game";
 import { InputField } from "@/components/ui/InputField";
 import { z } from "zod";
-import Image from "next/image";
+
 
 export type GameDraft = {
   title: string;
@@ -69,14 +69,9 @@ function validate(value: GameDraft): FormErrors {
   const result = gameSchema.safeParse(value);
   if (result.success) return {};
 
-  const errors: แ = {};
-  for (const issue of result.error.issues) {
-    const field = issue.path[0] as keyof GameDraft;
-    if (field && !errors[field]) {
-      errors[field] = issue.message;
-    }
-  }
-  return errors;
+  return Object.fromEntries(
+    result.error.issues.map((i) => [i.path[0],i.message])
+  )
 }
 
 export default function GameForm({
@@ -132,7 +127,7 @@ export default function GameForm({
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
           {draft.coverUrl && (
             <div className="relative aspect-21/9 w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-inner">
-              <Image
+              <img
                 src={draft.coverUrl}
                 alt="พรีวิวภาพหน้าปก"
                 className="w-full h-full object-cover"
