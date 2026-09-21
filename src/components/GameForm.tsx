@@ -69,12 +69,14 @@ function validate(value: GameDraft): FormErrors {
   const result = gameSchema.safeParse(value);
   if (result.success) return {};
 
-  const fieldErrors = result.error.flatten().fieldErrors;
-  return {
-    title: fieldErrors.title?.[0],
-    platform: fieldErrors.platform?.[0],
-    estimatedHours: fieldErrors.estimatedHours?.[0],
-  };
+  const errors: แ = {};
+  for (const issue of result.error.issues) {
+    const field = issue.path[0] as keyof GameDraft;
+    if (field && !errors[field]) {
+      errors[field] = issue.message;
+    }
+  }
+  return errors;
 }
 
 export default function GameForm({
