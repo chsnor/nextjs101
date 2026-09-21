@@ -17,7 +17,7 @@ const nextStatusMap: Record<GameStatus, GameStatus> = {
   เล่นจบแล้ว: "ยังไม่เริ่ม",
 };
 
-export const useGameStore = create<GameState>((set, get) => ({
+export const useGameStore = create<GameState>((set) => ({
   games: initialGames,
   lastDeletedGame: null,
   addGame: (newGame) =>

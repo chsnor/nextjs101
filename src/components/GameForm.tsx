@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import type { Game, GamePlatform, GameStatus } from "@/types/game";
 import { InputField } from "@/components/ui/InputField";
 import { z } from "zod";
+import Image from "next/image";
 
 export type GameDraft = {
   title: string;
@@ -129,7 +130,7 @@ export default function GameForm({
         <form onSubmit={handleSubmit} noValidate className="space-y-4">
           {draft.coverUrl && (
             <div className="relative aspect-21/9 w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-inner">
-              <img
+              <Image
                 src={draft.coverUrl}
                 alt="พรีวิวภาพหน้าปก"
                 className="w-full h-full object-cover"
