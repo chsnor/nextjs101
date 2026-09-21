@@ -229,7 +229,7 @@ export default function GameExplorer({ initialGames }: GameExplorerProps) {
               aria-label="ค้นหาเกม"
               value={keyword}
               onChange={handleKeywordChange}
-              placeholder="ค้นหาชื่อเกม..."
+              placeholder="     ค้นหาชื่อเกม..."
               className="w-full pl-9 pr-4 py-1.5 bg-slate-50/70 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/10 text-slate-900 placeholder-slate-400 rounded-xl text-xs font-medium transition outline-none"
             />
           </div>
