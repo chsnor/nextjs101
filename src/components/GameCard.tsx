@@ -8,6 +8,7 @@ import {
   Smartphone,
   Clock,
 } from "lucide-react";
+import Image from "next/image";
 
 type GameCardProps = {
   game: Game;
@@ -105,9 +106,9 @@ export default function GameCard({
         className={`h-1.5 w-full bg-linear-to-r ${platform.gradient} transition-all duration-300 group-hover:h-2`}
       />
 
-      <div className="relative aspect-16/9 w-full bg-slate-900 overflow-hidden">
+      <div className="relative aspect-video w-full bg-slate-900 overflow-hidden">
         {game.coverUrl ? (
-          <img
+          <Image
             src={game.coverUrl}
             alt={game.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out brightness-90 group-hover:brightness-100"

@@ -3,7 +3,7 @@
 import { useState, type ChangeEvent } from "react";
 import GameCard from "@/components/GameCard";
 import GameForm, { type GameDraft } from "@/components/GameForm";
-import type { Game, GamePlatform, GameStatus } from "@/types/game";
+import type {  GamePlatform, GameStatus } from "@/types/game";
 import { useGameStore } from "@/store/gameStore";
 import { Select } from "@/components/ui/Select";
 import { MetricCard } from "@/components/ui/MetricCard";
@@ -19,11 +19,9 @@ import {
 } from "lucide-react";
 import Fuse from "fuse.js";
 
-type GameExplorerProps = {
-  initialGames: Game[];
-};
 
-export default function GameExplorer({ initialGames }: GameExplorerProps) {
+
+export default function GameExplorer() {
   const games = useGameStore((state) => state.games);
   const addGame = useGameStore((state) => state.addGame);
   const updateGame = useGameStore((state) => state.updateGame);

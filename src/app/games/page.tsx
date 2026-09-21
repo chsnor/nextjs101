@@ -1,4 +1,3 @@
-import { initialGames } from "@/data/games";
 import GameExplorer from "@/components/GameExplorer";
 import type { Metadata } from "next";
 
@@ -15,7 +14,7 @@ export default function GamesPage() {
           Game Backlog
         </h1>
       </div>
-      <GameExplorer initialGames={initialGames} />
+      <GameExplorer />
     </main>
   );
 }
