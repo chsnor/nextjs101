@@ -1,10 +1,15 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
-import type { Game, GamePlatform, GameStatus } from "@/types/game";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import {
+  GAME_PLATFORMS,
+  GAME_STATUSES,
+  type Game,
+  type GamePlatform,
+  type GameStatus,
+} from "@/types/game";
 import { InputField } from "@/components/ui/InputField";
 import { z } from "zod";
-
 
 export type GameDraft = {
   title: string;
@@ -21,16 +26,6 @@ const emptyDraft: GameDraft = {
   status: "ยังไม่เริ่ม",
   coverUrl: "",
 };
-
-const platforms: GamePlatform[] = [
-  "PC",
-  "PlayStation 5",
-  "Nintendo Switch",
-  "Xbox Series X/S",
-  "Mobile",
-];
-
-const statuses: GameStatus[] = ["ยังไม่เริ่ม", "กำลังเล่น", "เล่นจบแล้ว"];
 
 type FormErrors = Partial<Record<keyof GameDraft, string>>;
 
@@ -61,17 +56,17 @@ const gameSchema = z.object({
       const num = Number(val);
       return Number.isInteger(num) && num > 0;
     }, "เวลาที่ใช้ต้องเป็นจำนวนเต็มบวก (ชั่วโมง)"),
-  status: z.enum(["ยังไม่เริ่ม", "กำลังเล่น", "เล่นจบแล้ว"]),
+  status: z.enum(GAME_STATUSES),
   coverUrl: z.string().trim().optional(),
 });
 
-function validate(value: GameDraft): FormErrors {
-  const result = gameSchema.safeParse(value);
+function validate(draft: GameDraft): FormErrors {
+  const result = gameSchema.safeParse(draft);
   if (result.success) return {};
 
   return Object.fromEntries(
-    result.error.issues.map((i) => [i.path[0],i.message])
-  )
+    result.error.issues.map((issue) => [issue.path[0], issue.message])
+  );
 }
 
 export default function GameForm({
@@ -81,6 +76,8 @@ export default function GameForm({
 }: GameFormProps) {
   const [draft, setDraft] = useState<GameDraft>(toDraft(initialGame));
   const [errors, setErrors] = useState<FormErrors>({});
+
+  const isEditing = !!initialGame;
 
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -96,11 +93,7 @@ export default function GameForm({
     if (Object.keys(nextErrors).length > 0) return;
 
     onSave(draft);
-    setDraft(emptyDraft);
-    setErrors({});
   }
-
-  const isEditing = !!initialGame;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-in fade-in duration-200">
@@ -157,7 +150,7 @@ export default function GameForm({
               แพลตฟอร์ม
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {platforms.map((p) => {
+              {GAME_PLATFORMS.map((p) => {
                 const isSelected = draft.platform === p;
                 return (
                   <button
@@ -178,7 +171,10 @@ export default function GameForm({
               })}
             </div>
             {errors.platform ? (
-              <p id="platform-error" className="text-red-500 text-xs mt-1.5 font-medium">
+              <p
+                id="platform-error"
+                className="text-red-500 text-xs mt-1.5 font-medium"
+              >
                 {errors.platform}
               </p>
             ) : null}
@@ -212,7 +208,7 @@ export default function GameForm({
               สถานะการเล่น
             </label>
             <div className="grid grid-cols-3 gap-2 p-1.5 bg-slate-100 rounded-2xl">
-              {statuses.map((s) => {
+              {GAME_STATUSES.map((s) => {
                 const isSelected = draft.status === s;
                 return (
                   <button
@@ -238,11 +234,7 @@ export default function GameForm({
             <button
               type="button"
               className="cursor-pointer px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition"
-              onClick={() => {
-                setDraft(emptyDraft);
-                setErrors({});
-                onCancel();
-              }}
+              onClick={onCancel}
             >
               ยกเลิก
             </button>

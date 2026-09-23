@@ -1,4 +1,4 @@
-import { Gamepad2, Flame, Trophy, Clock, LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 type MetricItemProps = {
   title: string;

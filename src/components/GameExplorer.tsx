@@ -1,9 +1,14 @@
 "use client";
 
-import { useState, type ChangeEvent } from "react";
+import { useState } from "react";
 import GameCard from "@/components/GameCard";
 import GameForm, { type GameDraft } from "@/components/GameForm";
-import type {  GamePlatform, GameStatus } from "@/types/game";
+import {
+  GAME_PLATFORMS,
+  type Game,
+  type GamePlatform,
+  type GameStatus,
+} from "@/types/game";
 import { useGameStore } from "@/store/gameStore";
 import { Select } from "@/components/ui/Select";
 import { MetricCard } from "@/components/ui/MetricCard";
@@ -19,7 +24,15 @@ import {
 } from "lucide-react";
 import Fuse from "fuse.js";
 
-
+function draftToGame(draft: GameDraft): Omit<Game, "id"> {
+  return {
+    title: draft.title.trim(),
+    platform: draft.platform as GamePlatform,
+    estimatedHours: Number(draft.estimatedHours),
+    status: draft.status as GameStatus,
+    coverUrl: draft.coverUrl?.trim() || undefined,
+  };
+}
 
 export default function GameExplorer() {
   const games = useGameStore((state) => state.games);
@@ -40,40 +53,23 @@ export default function GameExplorer() {
     .filter((game) => game.status === "ยังไม่เริ่ม")
     .reduce((sum, game) => sum + game.estimatedHours, 0);
 
-  function handleKeywordChange(event: ChangeEvent<HTMLInputElement>) {
-    setKeyword(event.target.value);
-  }
-
-  const filteredByDropdowns = games.filter((game) => {
-    const matchesPlatform =
-      filterPlatform === "all" || game.platform === filterPlatform;
-    const matchesStatus =
-      filterStatus === "all" || game.status === filterStatus;
-    return matchesPlatform && matchesStatus;
-  });
-
-  const fuse = new Fuse(filteredByDropdowns, {
-    keys: ["title", "platform"],
-    threshold: 0.4,
-  });
-
-  const visibleGames = !keyword.trim()
-    ? filteredByDropdowns
-    : fuse.search(keyword.trim()).map((result) => result.item);
-
   function handleCreate(draft: GameDraft) {
-    addGame({
-      title: draft.title.trim(),
-      platform: draft.platform as GamePlatform,
-      estimatedHours: Number(draft.estimatedHours),
-      status: draft.status as GameStatus,
-      coverUrl: draft.coverUrl?.trim() || undefined,
-    });
+    addGame(draftToGame(draft));
     toast.success(`เพิ่มเกม "${draft.title.trim()}" เรียบร้อยแล้ว`);
   }
 
-  function handleDelete(id: string) {
-    setPendingDeleteId(id);
+  function handleUpdate(id: string, draft: GameDraft) {
+    updateGame(id, draftToGame(draft));
+    setEditingId(null);
+    toast.success("บันทึกการแก้ไขเรียบร้อยแล้ว");
+  }
+
+  function handleSave(draft: GameDraft) {
+    if (editingId === null) {
+      handleCreate(draft);
+      return;
+    }
+    handleUpdate(editingId, draft);
   }
 
   function confirmDelete() {
@@ -92,26 +88,6 @@ export default function GameExplorer() {
     }
   }
 
-  function handleUpdate(id: string, draft: GameDraft) {
-    updateGame(id, {
-      title: draft.title.trim(),
-      platform: draft.platform as GamePlatform,
-      estimatedHours: Number(draft.estimatedHours),
-      status: draft.status as GameStatus,
-      coverUrl: draft.coverUrl?.trim() || undefined,
-    });
-    setEditingId(null);
-    toast.success("บันทึกการแก้ไขเรียบร้อยแล้ว");
-  }
-
-  function handleSave(draft: GameDraft) {
-    if (editingId === null) {
-      handleCreate(draft);
-      return;
-    }
-    handleUpdate(editingId, draft);
-  }
-
   const playingCount = games.filter((g) => g.status === "กำลังเล่น").length;
   const finishedCount = games.filter((g) => g.status === "เล่นจบแล้ว").length;
   const completionRate =
@@ -119,9 +95,29 @@ export default function GameExplorer() {
   const pendingGame = games.find((game) => game.id === pendingDeleteId);
   const editingGame = games.find((game) => game.id === editingId);
 
+  const filteredByDropdowns = games.filter((game) => {
+    const matchesPlatform =
+      filterPlatform === "all" || game.platform === filterPlatform;
+    const matchesStatus =
+      filterStatus === "all" || game.status === filterStatus;
+    return matchesPlatform && matchesStatus;
+  });
+
+  const fuse = new Fuse(filteredByDropdowns, {
+    keys: ["title", "platform"],
+    threshold: 0.4,
+  });
+
+  const visibleGames = !keyword.trim()
+    ? filteredByDropdowns
+    : fuse.search(keyword.trim()).map((result) => result.item);
+
   return (
     <div className="space-y-6">
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3.5" aria-label="สถิติคลังเกม">
+      <section
+        className="grid grid-cols-2 lg:grid-cols-4 gap-3.5"
+        aria-label="สถิติคลังเกม"
+      >
         <MetricCard
           title="ทั้งหมดในคลัง"
           value={games.length}
@@ -183,7 +179,10 @@ export default function GameExplorer() {
                 id: "ยังไม่เริ่ม",
                 label: `ยังไม่เริ่ม (${games.length - playingCount - finishedCount})`,
               },
-              { id: "เล่นจบแล้ว", label: `จบแล้ว (${finishedCount})` },
+              {
+                id: "เล่นจบแล้ว",
+                label: `จบแล้ว (${finishedCount})`,
+              },
             ].map((tab) => {
               const isActive = filterStatus === tab.id;
               return (
@@ -226,7 +225,7 @@ export default function GameExplorer() {
               type="search"
               aria-label="ค้นหาเกม"
               value={keyword}
-              onChange={handleKeywordChange}
+              onChange={(e) => setKeyword(e.target.value)}
               placeholder="     ค้นหาชื่อเกม..."
               className="w-full pl-9 pr-4 py-1.5 bg-slate-50/70 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/10 text-slate-900 placeholder-slate-400 rounded-xl text-xs font-medium transition outline-none"
             />
@@ -243,11 +242,11 @@ export default function GameExplorer() {
                 aria-label="กรองตามแพลตฟอร์ม"
               >
                 <option value="all">ทุกแพลตฟอร์ม</option>
-                <option value="PC">PC</option>
-                <option value="PlayStation 5">PlayStation 5</option>
-                <option value="Nintendo Switch">Nintendo Switch</option>
-                <option value="Xbox Series X/S">Xbox Series X/S</option>
-                <option value="Mobile">Mobile</option>
+                {GAME_PLATFORMS.map((p) => (
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
+                ))}
               </Select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400 text-[10px]">
                 ▼
@@ -276,7 +275,7 @@ export default function GameExplorer() {
                 setEditingId(game.id);
                 setIsFormOpen(true);
               }}
-              onDelete={() => handleDelete(game.id)}
+              onDelete={() => setPendingDeleteId(game.id)}
               onCycleStatus={() => {
                 cycleStatus(game.id);
                 toast.info(`เปลี่ยนสถานะ "${game.title}" แล้ว`);

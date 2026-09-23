@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# agent / assistant workspace (not part of the website)
+.agent/
+.freebuff/
 # dependencies
 /node_modules
 /.pnp

@@ -1,6 +1,7 @@
-import { Game, GameStatus } from "@/types/game";
+import type { Game, GameStatus } from "@/types/game";
 import { initialGames } from "@/data/games";
 import { create } from "zustand";
+
 export type GameState = {
   games: Game[];
   lastDeletedGame: Game | null;
@@ -20,6 +21,7 @@ const nextStatusMap: Record<GameStatus, GameStatus> = {
 export const useGameStore = create<GameState>((set) => ({
   games: initialGames,
   lastDeletedGame: null,
+
   addGame: (newGame) =>
     set((state) => ({
       games: [

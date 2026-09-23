@@ -1,6 +1,16 @@
-export type GamePlatform = "PC" | "PlayStation 5" | "Nintendo Switch" | "Xbox Series X/S" | "Mobile";
+export const GAME_PLATFORMS = [
+  "PC",
+  "PlayStation 5",
+  "Nintendo Switch",
+  "Xbox Series X/S",
+  "Mobile",
+] as const;
 
-export type GameStatus = "ยังไม่เริ่ม" | "กำลังเล่น" | "เล่นจบแล้ว";
+export type GamePlatform = (typeof GAME_PLATFORMS)[number];
+
+export const GAME_STATUSES = ["ยังไม่เริ่ม", "กำลังเล่น", "เล่นจบแล้ว"] as const;
+
+export type GameStatus = (typeof GAME_STATUSES)[number];
 
 export type Game = {
   id: string;
