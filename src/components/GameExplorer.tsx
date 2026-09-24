@@ -20,7 +20,7 @@ import {
   Flame,
   Clock,
   Gamepad2,
-  Filter,
+  
 } from "lucide-react";
 import Fuse from "fuse.js";
 
@@ -234,7 +234,6 @@ export default function GameExplorer() {
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <div className="relative w-full sm:w-auto">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                <Filter size={13} />
               </div>
               <Select
                 value={filterPlatform}
